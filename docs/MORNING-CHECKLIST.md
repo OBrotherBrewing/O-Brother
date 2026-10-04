@@ -37,6 +37,8 @@ session with the go-ahead (and any key it needs) and it will be done for you.
 
 ## C. Switch on (Claude can do all of this once A and B1-B4 are done)
 
+`python -m gnn doctor` lists anything still blocking launch (placeholders, keys, feeds, legal sign-off).
+
 1. Fill in `config/site.yaml`: brand, domain, company details, editor, newsletter form URL.
 2. Repository settings → Actions → allow GitHub Actions to create pull requests.
 3. Repository variables: `DEPLOY_TARGET=cloudflare`, `CLOUDFLARE_PROJECT=<name>`,

@@ -148,6 +148,11 @@ def cmd_trackers(a):
         print(line)
 
 
+def cmd_doctor(a):
+    from .doctor import main
+    return main()
+
+
 def cmd_demo(a):
     """Offline end to end: fictional fixtures + mock model → queue → approve → site."""
     from . import ROOT
@@ -234,6 +239,7 @@ def main(argv=None):
     s.set_defaults(fn=cmd_monitor)
 
     sub.add_parser("trackers", help="refresh progress tracker data from Our World in Data").set_defaults(fn=cmd_trackers)
+    sub.add_parser("doctor", help="go-live readiness check (placeholders, keys, feeds, legal sign-off)").set_defaults(fn=cmd_doctor)
 
     s = sub.add_parser("demo", help="offline end-to-end demo on fictional fixtures")
     s.add_argument("--root", help="scratch directory (default: a new temp dir)")
