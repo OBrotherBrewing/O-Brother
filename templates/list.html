@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% from "partials/macros.html" import card %}
+{% block main %}
+<div class="wrap">
+  <header class="list-head"><h1>{{ heading }}</h1>{% if intro %}<p>{{ intro }}</p>{% endif %}</header>
+  {% if items %}
+  <div class="list">{% for s in items %}{{ card(s) }}{% endfor %}</div>
+  {% else %}
+  <div class="block"><div class="empty">No stories here yet.</div></div>
+  {% endif %}
+</div>
+{% endblock %}

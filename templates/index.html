@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% from "partials/macros.html" import card, signup %}
+{% block main %}
+<div class="wrap">
+  {% if not latest %}
+  <div class="block"><div class="empty">The first stories are being checked. Come back soon, or get {{ brand.newsletter_name }} by email.</div></div>
+  {% else %}
+  <section class="lead-grid" aria-label="Top progress">
+    <div>
+      <div class="section-head"><h2>Top progress</h2><a href="/section/top-progress/">More</a></div>
+      {{ card(top[0], "lead") }}
+    </div>
+    <div>
+      <div class="section-head"><h2>Also moving</h2><a href="/latest/">Latest</a></div>
+      {% for s in top[1:] %}{{ card(s, "compact") }}{% endfor %}
+      {% for s in latest if s not in top %}{% if loop.index <= 4 %}{{ card(s, "compact") }}{% endif %}{% endfor %}
+    </div>
+  </section>
+  {% endif %}
+
+  <section class="block">{{ signup(brand, newsletter) }}</section>
+
+  {% for sec in sections if sec.slug != "top-progress" and by_section.get(sec.slug) %}
+  <section class="block" aria-labelledby="h-{{ sec.slug }}">
+    <div class="section-head"><h2 id="h-{{ sec.slug }}">{{ sec.name }}</h2><a href="/section/{{ sec.slug }}/">All {{ sec.name }}</a></div>
+    <div class="rows">
+      {% for s in by_section[sec.slug][:site.stories_per_section_on_home] %}{{ card(s) }}{% endfor %}
+    </div>
+  </section>
+  {% endfor %}
+</div>
+{% endblock %}

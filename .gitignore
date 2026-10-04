@@ -1,0 +1,13 @@
+# Strategy, finance and unregistered-name material stays out of the public repo
+planning/
+# Build output and local state
+dist/
+.cache/
+*.pyc
+__pycache__/
+.pytest_cache/
+.env
+*.egg-info/
+data/cost-log.jsonl
+# Drafts awaiting review never go into the repo directly (they travel as pull requests)
+queue/

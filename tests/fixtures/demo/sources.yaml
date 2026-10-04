@@ -1,0 +1,15 @@
+licences:
+  cc-by-4.0: {name: "CC BY 4.0", commercial: true, derivatives: true}
+sources:
+  - id: sample-agency
+    name: "Sample Energy Agency (layout sample)"
+    owner_org: "Sample Energy Agency"
+    url: "https://agency.example.org/feed.xml"
+    kind: rss
+    tier: 1
+    rights: LICENSED
+    licence: cc-by-4.0
+    country: IE
+    sections: [planet]
+    verified: true
+primary_domains: [example.gov]

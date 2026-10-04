@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block main %}
+<div class="wrap">
+  <header class="list-head"><h1>Corrections</h1><p>Every correction, clarification, update and retraction we have made, newest first. We never change facts silently. <a href="/corrections-policy/">Our corrections policy</a>.</p></header>
+  {% if corrections %}
+  <ul class="corr-list page" style="max-width:none">
+    {% for c in corrections %}
+    <li><span class="label">{{ c.type }} · {{ c.date | date }}</span>
+      <h3 style="font-size:20px;margin:6px 0"><a href="{{ c.story.url }}">{{ c.story.title }}</a></h3>
+      <p style="margin:0">{{ c.note }}</p></li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <div class="block"><div class="empty">No corrections yet. When we get something wrong, it will be listed here.</div></div>
+  {% endif %}
+</div>
+{% endblock %}

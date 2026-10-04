@@ -1,0 +1,235 @@
+# Source register. Every source the pipeline reads must be listed here with a licence.
+# tier (editorial trust): 1 official/peer-reviewed/primary, 2 wire/established publisher,
+#                         3 specialist/university/NGO/local, 4 social/blog/press release (lead only)
+# rights (what the pipeline may do):
+#   LICENSED        - open licence allows commercial reuse and adaptation, with attribution
+#   PRIMARY_PUBLIC  - an organisation's own announcement: use facts, quote 1-2 sentences, link
+#   FACTS_ONLY      - third-party journalism: a lead only; facts must be confirmed from a primary source;
+#                     the article text is never given to the drafting model
+#   LINK_ONLY       - headline in our own words plus a link; no full-text processing
+#   RESTRICTED      - do not use without a human
+# verified: false = URL and licence not yet confirmed live. `python -m gnn sources check` tests every feed.
+
+licences:
+  cc-by-4.0:      {name: "CC BY 4.0", commercial: true, derivatives: true, url: "https://creativecommons.org/licenses/by/4.0/"}
+  ogl-3:          {name: "Open Government Licence v3.0", commercial: true, derivatives: true, url: "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"}
+  us-federal-pd:  {name: "US federal work (17 USC 105)", commercial: true, derivatives: true, url: "https://www.usa.gov/government-copyright", note: "Public domain in the US; check each asset for contractor or partner material and insignia rules."}
+  cc-by-nd-4.0:   {name: "CC BY-ND 4.0", commercial: true, derivatives: false, url: "https://creativecommons.org/licenses/by-nd/4.0/"}
+  press-release:  {name: "Press release (all rights reserved; facts and short quotes)", commercial: true, derivatives: false}
+  all-rights:     {name: "All rights reserved", commercial: false, derivatives: false}
+  metadata-only:  {name: "Metadata and links only", commercial: true, derivatives: false}
+
+sources:
+  # ---- LICENSED primary sources ----
+  - id: ec-presscorner
+    name: "European Commission Press Corner"
+    owner_org: "European Commission"
+    url: "https://ec.europa.eu/commission/presscorner/api/rss?language=en"
+    kind: rss
+    tier: 1
+    rights: LICENSED
+    licence: cc-by-4.0
+    country: EU
+    sections: [world, planet, business-work]
+    verified: false
+  - id: govuk-news
+    name: "GOV.UK news and communications"
+    owner_org: "UK Government"
+    url: "https://www.gov.uk/search/news-and-communications.atom"
+    kind: rss
+    tier: 1
+    rights: LICENSED
+    licence: ogl-3
+    country: GB
+    sections: [world, science-health, planet]
+    verified: false
+  - id: govie-press
+    name: "gov.ie press releases"
+    owner_org: "Government of Ireland"
+    url: "https://www.gov.ie/en/rss/press-releases/"
+    kind: rss
+    tier: 1
+    rights: LICENSED
+    licence: cc-by-4.0
+    country: IE
+    sections: [ireland]
+    verified: false
+  - id: cso-ie
+    name: "Central Statistics Office (Ireland) releases"
+    owner_org: "Central Statistics Office Ireland"
+    url: "https://www.cso.ie/en/rss/"
+    kind: rss
+    tier: 1
+    rights: LICENSED
+    licence: cc-by-4.0
+    country: IE
+    sections: [ireland, business-work]
+    verified: false
+  - id: owid
+    name: "Our World in Data"
+    owner_org: "Global Change Data Lab"
+    url: "https://ourworldindata.org/atom.xml"
+    kind: rss
+    tier: 1
+    rights: LICENSED
+    licence: cc-by-4.0
+    country: GLOBAL
+    sections: [top-progress, world, science-health, planet]
+    verified: false
+  - id: nasa
+    name: "NASA news releases"
+    owner_org: "NASA"
+    url: "https://www.nasa.gov/news-release/feed/"
+    kind: rss
+    tier: 1
+    rights: LICENSED
+    licence: us-federal-pd
+    country: US
+    sections: [science-health, planet]
+    verified: false
+  - id: nih
+    name: "NIH news releases"
+    owner_org: "US National Institutes of Health"
+    url: "https://www.nih.gov/news-events/news-releases/feed"
+    kind: rss
+    tier: 1
+    rights: LICENSED
+    licence: us-federal-pd
+    country: US
+    sections: [science-health]
+    always_human: true          # health findings always go to a human
+    verified: false
+  - id: nsf
+    name: "NSF news"
+    owner_org: "US National Science Foundation"
+    url: "https://www.nsf.gov/rss/rss_www_news.xml"
+    kind: rss
+    tier: 1
+    rights: LICENSED
+    licence: us-federal-pd
+    country: US
+    sections: [science-health, planet]
+    verified: false
+  - id: noaa
+    name: "NOAA news"
+    owner_org: "US National Oceanic and Atmospheric Administration"
+    url: "https://www.noaa.gov/rss.xml"
+    kind: rss
+    tier: 1
+    rights: LICENSED
+    licence: us-federal-pd
+    country: US
+    sections: [planet]
+    verified: false
+
+  # ---- PRIMARY_PUBLIC (facts, short quotes, link) ----
+  - id: eurekalert
+    name: "EurekAlert! science news releases"
+    owner_org: "AAAS (aggregating institutions)"
+    url: "https://www.eurekalert.org/rss.xml"
+    kind: rss
+    tier: 3
+    rights: PRIMARY_PUBLIC
+    licence: press-release
+    country: GLOBAL
+    sections: [science-health, planet]
+    attribution: "EurekAlert!, the online, global news service operated by AAAS"
+    note: "Title and summary with link and attribution; full text needs the issuing institution's permission. Owner for independence checks is the issuing institution, not AAAS."
+    verified: false
+  - id: esa
+    name: "European Space Agency"
+    owner_org: "ESA"
+    url: "https://www.esa.int/rssfeed/Our_Activities"
+    kind: rss
+    tier: 1
+    rights: PRIMARY_PUBLIC
+    licence: press-release
+    country: EU
+    sections: [science-health, planet]
+    note: "Images are mixed licence (CC BY-SA 3.0 IGO or ESA standard). Check each asset."
+    verified: false
+  - id: un-news
+    name: "UN News"
+    owner_org: "United Nations"
+    url: "https://news.un.org/feed/subscribe/en/news/all/rss.xml"
+    kind: rss
+    tier: 2
+    rights: PRIMARY_PUBLIC
+    licence: all-rights
+    country: GLOBAL
+    sections: [world]
+    verified: false
+  - id: who
+    name: "WHO news"
+    owner_org: "World Health Organization"
+    url: "https://www.who.int/rss-feeds/news-english.xml"
+    kind: rss
+    tier: 1
+    rights: PRIMARY_PUBLIC
+    licence: all-rights
+    country: GLOBAL
+    sections: [science-health, world]
+    always_human: true
+    note: "WHO content is CC BY-NC-SA: non-commercial, so facts only."
+    verified: false
+
+  # ---- FACTS_ONLY leads (never rewritten) ----
+  - id: the-conversation
+    name: "The Conversation (global)"
+    owner_org: "The Conversation"
+    url: "https://theconversation.com/global/articles.atom"
+    kind: rss
+    tier: 2
+    rights: FACTS_ONLY
+    licence: cc-by-nd-4.0
+    country: GLOBAL
+    sections: [science-health, planet, world]
+    note: "CC BY-ND forbids adaptation and systematic republication; use as a lead to the underlying study."
+    verified: false
+
+  # ---- LINK_ONLY discovery ----
+  - id: gdelt-progress
+    name: "GDELT DOC 2.0 (progress queries)"
+    owner_org: "GDELT Project"
+    url: "https://api.gdeltproject.org/api/v2/doc/doc"
+    kind: gdelt
+    tier: 4
+    rights: LINK_ONLY
+    licence: metadata-only
+    country: GLOBAL
+    sections: [world]
+    queries:
+      - '("record low" OR "fell to" OR "declined to") (deaths OR poverty OR emissions OR infections) sourcelang:english'
+      - '("restored" OR "reintroduced" OR "recovered") (species OR habitat OR river OR reef) sourcelang:english'
+      - '("approved" OR "eliminated" OR "certified") (vaccine OR treatment OR malaria OR trachoma) sourcelang:english'
+      - '(renewable OR solar OR wind) ("record high" OR "new record" OR "highest ever") sourcelang:english'
+    verified: false
+
+# Domains whose links count as primary evidence when found inside a lead article.
+primary_domains:
+  - doi.org
+  - europa.eu
+  - gov.ie
+  - gov.uk
+  - gov
+  - edu
+  - ac.uk
+  - who.int
+  - un.org
+  - worldbank.org
+  - oecd.org
+  - nature.com
+  - science.org
+  - thelancet.com
+  - nejm.org
+  - bmj.com
+  - plos.org
+  - cell.com
+  - arxiv.org
+  - medrxiv.org
+  - biorxiv.org
+  - ourworldindata.org
+  - cso.ie
+  - ons.gov.uk
+  - irena.org
+  - iea.org

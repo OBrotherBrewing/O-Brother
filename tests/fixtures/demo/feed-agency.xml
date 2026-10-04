@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"><channel><title>Sample Energy Agency (layout sample)</title><link>https://agency.example.org/</link><description>Fictional feed for offline testing</description>
+<item><title>Layout sample: wind met 47% of electricity demand in September</title><link>https://agency.example.org/news/wind-september?utm_source=rss</link><description>Fictional sample release used to test the pipeline offline.</description><pubDate>Sat, 04 Oct 2026 08:00:00 GMT</pubDate></item>
+<item><title>Layout sample: river otter numbers recover across 12 catchments</title><link>https://agency.example.org/news/otters</link><description>Fictional sample release used to test the pipeline offline.</description><pubDate>Sat, 04 Oct 2026 09:00:00 GMT</pubDate></item>
+<item><title>Layout sample: library opening hours extended in 31 towns</title><link>https://agency.example.org/news/libraries</link><description>Fictional sample release.</description><pubDate>Sat, 04 Oct 2026 10:00:00 GMT</pubDate></item>
+</channel></rss>

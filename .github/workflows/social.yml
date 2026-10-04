@@ -1,0 +1,20 @@
+name: Social assets
+# Renders carousel slides, captions and vertical videos for the newest stories.
+# Download the artifact to post by hand, or schedule them in your social tool.
+on:
+  schedule:
+    - cron: "10 6,12,17 * * *"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11", cache: pip }
+      - run: pip install -r requirements.txt && sudo apt-get install -y ffmpeg >/dev/null
+      - run: python -m gnn social --top 3 --video --out social
+      - uses: actions/upload-artifact@v4
+        with: { name: social-assets, path: social, retention-days: 14 }

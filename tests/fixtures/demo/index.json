@@ -1,0 +1,7 @@
+{
+  "https://agency.example.org/news/wind-september": "wind.html",
+  "https://data.example.gov/wind-2026-09": "wind-data.html",
+  "https://agency.example.org/news/otters": "otters.html",
+  "https://agency.example.org/news/libraries": "libraries.html",
+  "https://agency.example.org/feed.xml": "feed-agency.xml"
+}

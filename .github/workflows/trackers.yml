@@ -1,0 +1,26 @@
+name: Progress trackers
+on:
+  schedule:
+    - cron: "5 4 * * 1"   # Mondays
+  workflow_dispatch:
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11", cache: pip }
+      - run: pip install -r requirements.txt
+      - run: python -m gnn trackers
+      - run: |
+          git config user.name "newsroom-bot"; git config user.email "newsroom-bot@users.noreply.github.com"
+          git add data/trackers && git commit -m "Trackers $(date -u +%F) [skip ci]" || true
+          git push
+  deploy:
+    needs: refresh
+    uses: ./.github/workflows/deploy.yml
+    secrets: inherit

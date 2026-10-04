@@ -1,0 +1,9 @@
+anthropic>=1.11
+jinja2>=3.1
+pyyaml>=6
+feedparser>=6
+pillow>=10
+markdown>=3.5
+python-dateutil>=2.9
+pydantic>=2
+pytest>=8

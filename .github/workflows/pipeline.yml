@@ -1,0 +1,36 @@
+name: Newsroom pipeline
+# Finds, verifies and drafts stories, then opens one pull request per draft for review.
+on:
+  schedule:
+    - cron: "17 5,8,11,14,17 * * *"   # five runs a day, 06:17-18:17 Irish time (05:17-17:17 UTC)
+  workflow_dispatch:
+    inputs:
+      only:
+        description: "Comma-separated source ids (blank = all)"
+        required: false
+concurrency: { group: pipeline, cancel-in-progress: false }
+permissions:
+  contents: write
+  pull-requests: write
+jobs:
+  run:
+    if: ${{ vars.PIPELINE_ENABLED == 'true' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11", cache: pip }
+      - run: pip install -r requirements.txt
+      - name: Run pipeline
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python -m gnn run ${{ github.event.inputs.only && format('--only {0}', github.event.inputs.only) || '' }} | tee run-report.json
+      - name: Open review pull requests
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BASE_BRANCH: ${{ github.event.repository.default_branch }}
+        run: scripts/open_review_prs.sh
+      - uses: actions/upload-artifact@v4
+        with: { name: run-report, path: run-report.json, retention-days: 30 }

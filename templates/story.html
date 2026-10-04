@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% from "partials/macros.html" import delta, chips, signup, card %}
+{% block description %}{{ s.dek }}{% endblock %}
+{% block head %}
+<meta property="og:title" content="{{ s.title }}">
+<meta property="og:description" content="{{ s.dek }}">
+<meta property="og:type" content="article">
+<meta property="og:image" content="{{ site.base_url }}/og/{{ s.slug }}.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="{{ site.base_url }}{{ s.url }}">
+<script type="application/ld+json">{{ jsonld | safe }}</script>
+{% endblock %}
+{% block main %}
+<div class="wrap">
+<article class="story">
+  <div>
+    <div class="kicker">
+      <span class="label"><a href="/section/{{ s.section }}/">{{ s.section_name }}</a> · {{ s.category_label }}</span>
+      {{ chips(s) }}
+    </div>
+    <h1>{{ s.title }}</h1>
+    <p class="dek">{{ s.dek }}</p>
+    <div class="byline num">
+      <span>Published {{ s.published_at | date }}</span>
+      {% if s.updated_at and s.updated_at != s.published_at %}<span>Updated {{ s.updated_at | date }}</span>{% endif %}
+      <span>{{ s.minutes }} min read</span>
+      {% if s.review and s.review.mode == "reviewed" %}<span>Reviewed by <b>{{ s.review.editor }}</b></span>{% endif %}
+    </div>
+
+    {% if s.status == "retracted" %}
+    <div class="correction-box"><b>Retracted.</b> {{ s.corrections[-1].note if s.corrections }}</div>
+    {% elif s.corrections %}
+    <div class="correction-box"><b>{{ s.corrections[-1].type | capitalize }}, {{ s.corrections[-1].date | date }}:</b> {{ s.corrections[-1].note }}</div>
+    {% endif %}
+
+    {% if s.review and s.review.mode == "auto" %}
+    <div class="ai-label" role="note"><span aria-hidden="true">AI</span><span>{{ s.ai_disclosure }}</span></div>
+    {% endif %}
+
+    <div class="prose">{{ s.body_html | safe }}</div>
+
+    <section class="panel" aria-labelledby="why-h">
+      <h2 id="why-h">Why this matters</h2>
+      <p>{{ s.why_it_matters }}</p>
+    </section>
+
+    <section class="panel" aria-labelledby="ev-h">
+      <h2 id="ev-h">Evidence and limitations</h2>
+      <p>{{ s.corro_label }}.{% if s.claims %} We checked {{ s.claims | length }} factual claims against the passages that support them.{% endif %}</p>
+      <ul class="limits">{% for l in s.limitations %}<li>{{ l }}</li>{% endfor %}</ul>
+      {% if s.claims %}
+      <details class="claims">
+        <summary>See every claim and the passage that supports it</summary>
+        <ol>
+          {% for c in s.claims %}
+          <li>{{ c.text }}<q>{{ c.span }}</q>
+            <span class="label">{{ c.doc_info.publisher }}{% if c.doc_info.url %} · <a href="{{ c.doc_info.url }}" rel="noopener">source</a>{% endif %}</span></li>
+          {% endfor %}
+        </ol>
+      </details>
+      <p class="label" style="margin-top:12px"><a href="/{{ s.evidence }}">Download the evidence file (JSON)</a></p>
+      {% endif %}
+    </section>
+
+    <section class="panel" aria-labelledby="src-h">
+      <h2 id="src-h">Sources</h2>
+      <ol class="sources">
+        {% for src in s.sources %}
+        <li><div>
+          <span class="pub">{{ src.publisher }}</span> · <a href="{{ src.url }}" rel="noopener">{{ src.title }}</a>
+          <div class="src-meta num"><span>{{ src.role }}</span><span>tier {{ src.tier }}</span><span>accessed {{ src.accessed_at | date }}</span></div>
+        </div></li>
+        {% endfor %}
+      </ol>
+    </section>
+
+    <section class="panel" aria-labelledby="made-h">
+      <h2 id="made-h">How this story was made</h2>
+      <p class="made">{{ s.ai_disclosure or "This story is awaiting review." }} <a href="/how-we-work/">How we work</a> · <a href="/ai-policy/">Our AI policy</a> · <a href="/corrections-policy/">Report an error</a></p>
+    </section>
+
+    {% if s.corrections | length > 1 %}
+    <section class="panel"><h2>Correction history</h2>
+      <ul class="corr-list">{% for c in s.corrections %}<li><span class="label">{{ c.type }} · {{ c.date | date }}</span><br>{{ c.note }}</li>{% endfor %}</ul>
+    </section>
+    {% endif %}
+  </div>
+
+  <aside class="aside-stack" aria-label="More">
+    {{ delta(s.key_metric) }}
+    {{ signup(brand, newsletter) }}
+    {% if related %}
+    <div>
+      <div class="section-head"><h2>More in {{ s.section_name }}</h2></div>
+      {% for r in related %}{{ card(r, "compact") }}{% endfor %}
+    </div>
+    {% endif %}
+  </aside>
+</article>
+</div>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% from "partials/macros.html" import signup %}
+{% block main %}
+<div class="wrap">
+  <header class="list-head"><h1>{{ brand.newsletter_name }}</h1><p>The day's verified improvements in under five minutes, every weekday morning. Plus {{ brand.weekly_name }} on Saturdays.</p></header>
+  <div class="block" style="max-width:640px">{{ signup(brand, newsletter) }}</div>
+  <section class="block">
+    <div class="section-head"><h2>Past issues</h2></div>
+    {% if issues %}
+    <ul class="corr-list">{% for i in issues %}<li><span class="label">{{ i.date | date }}</span><h3 style="font-size:20px;margin:6px 0"><a href="/newsletter/{{ i.slug }}/">{{ i.subject }}</a></h3></li>{% endfor %}</ul>
+    {% else %}<div class="empty">The first issue goes out after launch.</div>{% endif %}
+  </section>
+</div>
+{% endblock %}

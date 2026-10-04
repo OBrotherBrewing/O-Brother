@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block main %}
+<div class="wrap">
+  <header class="list-head"><h1>Progress trackers</h1><p>Long-run measures of how the world is changing, from open data. Updated automatically, with every source linked.</p></header>
+  {% if trackers %}
+  <div class="trackers">
+    {% for t in trackers %}
+    <article class="tracker">
+      <div class="label">{{ t.topic }}</div>
+      <h3 style="font-size:20px">{{ t.title }}</h3>
+      {{ t.svg | safe }}
+      <p class="num" style="margin:0;font-size:14.5px">{{ t.summary }}</p>
+      <div class="label">Source: <a href="{{ t.source_url }}" rel="noopener">{{ t.source }}</a> · {{ t.licence }}</div>
+    </article>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="block"><div class="empty">Trackers load on the first data refresh after launch.</div></div>
+  {% endif %}
+</div>
+{% endblock %}

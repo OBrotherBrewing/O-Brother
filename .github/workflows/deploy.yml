@@ -1,0 +1,42 @@
+name: Build and deploy
+on:
+  workflow_call:
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { ref: "${{ github.event.repository.default_branch }}" }
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11", cache: pip }
+      - run: pip install -r requirements.txt
+      - run: python -m gnn build
+      - uses: actions/upload-artifact@v4
+        with: { name: site, path: dist, retention-days: 7 }
+      - if: ${{ vars.DEPLOY_TARGET == 'github-pages' }}
+        uses: actions/upload-pages-artifact@v3
+        with: { path: dist }
+  cloudflare:
+    needs: build
+    if: ${{ vars.DEPLOY_TARGET == 'cloudflare' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with: { name: site, path: dist }
+      - uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy dist --project-name=${{ vars.CLOUDFLARE_PROJECT }} --branch=main
+  github-pages:
+    needs: build
+    if: ${{ vars.DEPLOY_TARGET == 'github-pages' }}
+    runs-on: ubuntu-latest
+    environment: { name: github-pages }
+    steps:
+      - uses: actions/deploy-pages@v4

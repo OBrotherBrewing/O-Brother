@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="{{ site.language }}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{% if page_title %}{{ page_title }} · {% endif %}{{ brand.name }}</title>
+<meta name="description" content="{% block description %}{{ brand.description | trim }}{% endblock %}">
+<link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/static/apple-touch-icon.png">
+<link rel="alternate" type="application/rss+xml" title="{{ brand.name }}" href="/feed.xml">
+<link rel="preload" href="/static/fonts/newsreader-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/static/style.css">
+<meta property="og:site_name" content="{{ brand.name }}">
+{% block head %}
+<meta property="og:title" content="{{ page_title or brand.name }}">
+<meta property="og:type" content="website">
+{% endblock %}
+{% if analytics.script_src %}<script defer data-domain="{{ analytics.data_domain }}" src="{{ analytics.script_src }}"></script>{% endif %}
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+{% if preview_banner %}<div class="preview">{{ preview_banner }}</div>{% endif %}
+<header class="masthead">
+  <div class="wrap">
+    <a class="brand" href="/">
+      <span class="brand-name">{{ brand.name }}</span>
+      <span class="brand-tag">{{ brand.tagline }}</span>
+    </a>
+    <div class="ledger-line num" aria-label="Today's ledger">
+      <span>{{ ledger.date | date }}</span>
+      <span><b>{{ ledger.count }}</b> verified {{ "improvement" if ledger.count == 1 else "improvements" }}</span>
+      <span><b>{{ ledger.sources }}</b> sources</span>
+      <span><b>{{ ledger.claims }}</b> claims checked</span>
+      <span><a href="/corrections/"><b>{{ ledger.corrections_30d }}</b> corrections in 30 days</a></span>
+    </div>
+  </div>
+</header>
+<nav class="nav" aria-label="Sections">
+  <div class="wrap">
+    <ul>
+      <li><a href="/latest/">Latest</a></li>
+      {% for sec in sections %}<li><a href="/section/{{ sec.slug }}/">{{ sec.name }}</a></li>{% endfor %}
+      <li><a href="/trackers/">Trackers</a></li>
+      <li><a href="/newsletter/">{{ brand.newsletter_name }}</a></li>
+    </ul>
+  </div>
+</nav>
+<main id="main">
+{% block main %}{% endblock %}
+</main>
+<footer class="footer">
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <div class="brand-name" style="font-size:26px">{{ brand.name }}</div>
+        <p style="color:var(--ink-2);margin:8px 0 0">{{ brand.description | trim }}</p>
+      </div>
+      <div><div class="label">About</div><ul>{% for p in footer_groups.about %}<li><a href="/{{ p.slug }}/">{{ p.title }}</a></li>{% endfor %}<li><a href="/feed.xml">RSS feed</a></li></ul></div>
+      <div><div class="label">Standards</div><ul>{% for p in footer_groups.standards %}<li><a href="/{{ p.slug }}/">{{ p.title }}</a></li>{% endfor %}<li><a href="/corrections/">Corrections log</a></li></ul></div>
+      <div><div class="label">Legal</div><ul>{% for p in footer_groups.legal %}<li><a href="/{{ p.slug }}/">{{ p.title }}</a></li>{% endfor %}</ul></div>
+    </div>
+    <div class="legal">© {{ build_time.year }} {{ publisher.legal_name }} · {{ publisher.registered_address }} · Editor: {{ publisher.editor_of_record }} · No tracking cookies</div>
+  </div>
+</footer>
+</body>
+</html>

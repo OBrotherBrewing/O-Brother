@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block description %}{{ p.summary }}{% endblock %}
+{% block main %}
+<div class="wrap">
+  <article class="page">
+    <div class="label">{{ p.group | capitalize }}</div>
+    <h1>{{ p.title }}</h1>
+    <div class="updated">Last updated {{ p.updated }}</div>
+    <div class="prose">{{ p.html | safe }}</div>
+  </article>
+</div>
+{% endblock %}

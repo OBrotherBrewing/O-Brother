@@ -1,0 +1,21 @@
+[project]
+name = "gnn"
+version = "0.1.0"
+description = "Good News News: an evidence-first, AI-assisted constructive news pipeline and static site."
+requires-python = ">=3.11"
+dependencies = [
+  "anthropic>=1.11",
+  "jinja2>=3.1",
+  "pyyaml>=6",
+  "feedparser>=6",
+  "pillow>=10",
+  "markdown>=3.5",
+  "python-dateutil>=2.9",
+  "pydantic>=2",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

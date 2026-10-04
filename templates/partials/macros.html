@@ -1,0 +1,53 @@
+{% macro delta(km, small=false) -%}
+{% if km and km.after %}
+<div class="delta{% if small %} delta--small{% endif %} num">
+  <span class="label">{{ km.label }}</span>
+  {% if km.before %}<span class="from">{{ km.before }}</span><span class="arrow" aria-hidden="true">→</span>{% endif %}
+  <span class="to">{{ km.after }}</span>
+  {% if km.period %}<span class="period">{{ km.period }}</span>{% endif %}
+</div>
+{% endif %}
+{%- endmacro %}
+
+{% macro chips(s) -%}
+<div class="evidence-strip">
+  {% if s.corroboration == "primary_confirmed" %}<span class="chip"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 6.5 5 9l5-6" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>Primary source</span>
+  {% elif s.corroboration == "two_independent" %}<span class="chip">2+ independent sources</span>
+  {% else %}<span class="chip chip--muted">Single source</span>{% endif %}
+  <span class="chip chip--muted num">{{ s.claims | length }} claims checked</span>
+  {% if s.review and s.review.mode == "auto" %}<span class="chip chip--warn">AI-generated · not reviewed</span>{% endif %}
+  {% if s.corrections %}<span class="chip chip--warn">Corrected</span>{% endif %}
+</div>
+{%- endmacro %}
+
+{% macro card(s, variant="") -%}
+<article class="card{% if variant %} card--{{ variant }}{% endif %}">
+  <div class="label">{{ s.section_name }}{% if s.category_label %} · {{ s.category_label }}{% endif %}</div>
+  <h3><a href="{{ s.url }}">{{ s.title }}</a></h3>
+  {% if variant != "compact" %}<p class="dek">{{ s.dek }}</p>{% endif %}
+  {% if variant == "lead" %}{{ delta(s.key_metric) }}{% elif variant != "compact" %}{{ delta(s.key_metric, true) }}{% endif %}
+  <div class="meta num"><span>{{ s.published_at | date }}</span><span>{{ s.minutes }} min</span><span>{{ s.n_sources }} source{{ "s" if s.n_sources != 1 }}</span></div>
+</article>
+{%- endmacro %}
+
+{% macro signup(brand, newsletter) -%}
+<section class="signup" aria-labelledby="signup-h">
+  <h2 id="signup-h">{{ brand.newsletter_name }}</h2>
+  <p>Five to eight verified improvements in under five minutes, every weekday morning. Free. Sources and caveats included.</p>
+  {% if newsletter.signup_action %}
+  <form action="{{ newsletter.signup_action }}" method="post" target="_blank">
+    <label class="skip" for="signup-email">Email address</label>
+    <input id="signup-email" type="email" name="{{ newsletter.signup_email_field or 'email' }}" placeholder="you@example.com" required autocomplete="email">
+    <button type="submit">Get it free</button>
+  </form>
+  <small>One click to unsubscribe. We never sell or share your email.</small>
+  {% else %}
+  <form onsubmit="return false">
+    <label class="skip" for="signup-email">Email address</label>
+    <input id="signup-email" type="email" placeholder="you@example.com" disabled>
+    <button type="button" disabled>Opening soon</button>
+  </form>
+  <small>Sign-ups open when the email provider is connected.</small>
+  {% endif %}
+</section>
+{%- endmacro %}

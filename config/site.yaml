@@ -1,0 +1,68 @@
+# Brand and publication settings. Everything a rebrand touches lives here.
+# Values in [SQUARE BRACKETS] are decisions waiting for the founder (see docs/MORNING-CHECKLIST.md).
+
+brand:
+  name: "Good News News"            # working title; swap for the chosen name
+  short_name: "GNN"
+  tagline: "What got better today. Checked, sourced, and honest about the limits."
+  newsletter_name: "The Better Brief"
+  weekly_name: "What Got Better This Week"
+  description: >-
+    Verified progress from around the world: what improved, the evidence behind it,
+    and what we still don't know. Based in Ireland, written for everyone.
+
+site:
+  base_url: "https://example.com"   # [DOMAIN] e.g. https://www.thedailymend.com
+  language: "en-IE"
+  timezone: "Europe/Dublin"
+  date_format: "%d/%m/%Y"
+  stories_per_section_on_home: 4
+  top_progress_count: 3
+
+publisher:
+  legal_name: "[COMPANY NAME] Limited"
+  company_number: "[CRO NUMBER]"
+  registered_address: "[REGISTERED ADDRESS], Ireland"
+  country: "IE"
+  editor_of_record: "[EDITOR NAME]"     # a named, competent person: AI Act Art 50(4) and EMFA Art 18
+  contact_email: "hello@example.com"
+  corrections_email: "corrections@example.com"
+  complaints_email: "complaints@example.com"
+  # EMFA Art 6(1): direct and indirect owners, and beneficial owners
+  owners:
+    - name: "[FOUNDER NAME]"
+      share: "100%"
+      role: "Founder and director"
+  state_advertising_revenue_last_year: "None"
+
+sections:
+  - {slug: top-progress, name: "Top Progress", blurb: "The developments that moved things most."}
+  - {slug: science-health, name: "Science & Health", blurb: "Research, medicine and public health."}
+  - {slug: planet, name: "Planet", blurb: "Climate, energy, nature and conservation."}
+  - {slug: community, name: "Community", blurb: "People and places solving problems together."}
+  - {slug: business-work, name: "Business & Work", blurb: "Jobs, enterprise and better ways of working."}
+  - {slug: culture, name: "Culture", blurb: "Arts, heritage and ideas."}
+  - {slug: sport, name: "Sport", blurb: "Achievement, inclusion and grassroots sport."}
+  - {slug: ireland, name: "Ireland", blurb: "Progress at home."}
+  - {slug: world, name: "World", blurb: "Progress everywhere else."}
+
+newsletter:
+  provider: "none"           # none | buttondown | kit  ([DECISION])
+  signup_action: ""          # form POST URL from the provider, e.g. https://buttondown.com/api/emails/embed-subscribe/<username>
+  signup_email_field: "email"
+  send_mode: "draft"         # draft = provider holds it for a human click; scheduled = sends at send_time
+  send_time: "07:00"
+  max_items: 7
+
+analytics:
+  # Cookie-free analytics keeps the site out of cookie-consent scope. Leave blank for none.
+  script_src: ""             # e.g. https://plausible.io/js/script.js
+  data_domain: ""
+
+social:
+  handles:
+    instagram: ""
+    tiktok: ""
+    youtube: ""
+    linkedin: ""
+    bluesky: ""

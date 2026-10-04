@@ -1,0 +1,31 @@
+name: The Better Brief
+on:
+  schedule:
+    - cron: "40 5 * * 1-5"   # weekdays 06:40 Irish summer time / 05:40 winter
+  workflow_dispatch:
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+jobs:
+  brief:
+    if: ${{ vars.NEWSLETTER_ENABLED == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11", cache: pip }
+      - run: pip install -r requirements.txt
+      - name: Build and hand to the email provider
+        env:
+          BUTTONDOWN_API_KEY: ${{ secrets.BUTTONDOWN_API_KEY }}
+          KIT_API_KEY: ${{ secrets.KIT_API_KEY }}
+        run: python -m gnn newsletter --send
+      - run: |
+          git config user.name "newsroom-bot"; git config user.email "newsroom-bot@users.noreply.github.com"
+          git add content/newsletter data/audit.jsonl && git commit -m "Better Brief $(date -u +%F) [skip ci]" || true
+          git push
+  deploy:
+    needs: brief
+    uses: ./.github/workflows/deploy.yml
+    secrets: inherit

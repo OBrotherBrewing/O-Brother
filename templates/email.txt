@@ -1,0 +1,15 @@
+{{ brand.newsletter_name | upper }} · {{ date.strftime('%d/%m/%Y') }}
+{{ brand.name }}: {{ items | length }} verified improvements, with sources and caveats.
+{% for s in items %}
+
+{{ loop.index }}. {{ s.title }}
+{{ s.newsletter_blurb or s.dek }}
+{% if s.limitations %}The caveat: {{ s.limitations[0] }}
+{% endif %}Read: {{ base_url }}{{ s.url }}
+Sources: {% for src in s.sources[:3] %}{{ src.publisher }}{% if not loop.last %}, {% endif %}{% endfor %}
+{% endfor %}
+
+--
+Drafted with AI from primary sources, checked claim by claim, reviewed by an editor.
+How we work: {{ base_url }}/how-we-work/
+{{ publisher.legal_name }}, {{ publisher.registered_address }}

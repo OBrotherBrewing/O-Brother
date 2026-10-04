@@ -1,0 +1,27 @@
+name: Source monitor
+# Re-checks the sources behind recent stories. Opens an issue if a source changed or vanished.
+on:
+  schedule:
+    - cron: "33 */6 * * *"
+  workflow_dispatch:
+permissions:
+  contents: write
+  issues: write
+jobs:
+  monitor:
+    if: ${{ vars.PIPELINE_ENABLED == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11", cache: pip }
+      - run: pip install -r requirements.txt
+      - run: python -m gnn monitor --issue-file monitor.md
+      - name: Open an issue for an editor
+        env: { GH_TOKEN: "${{ github.token }}" }
+        run: |
+          if [ -s monitor.md ]; then gh issue create --title "Source changes after publication $(date -u +%F)" --body-file monitor.md --label corrections || gh issue create --title "Source changes after publication $(date -u +%F)" --body-file monitor.md; fi
+      - run: |
+          git config user.name "newsroom-bot"; git config user.email "newsroom-bot@users.noreply.github.com"
+          git add data/audit.jsonl && git commit -m "monitor $(date -u +%FT%H:%MZ) [skip ci]" || true
+          git push

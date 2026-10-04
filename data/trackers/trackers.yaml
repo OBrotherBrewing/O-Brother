@@ -1,0 +1,60 @@
+# Long-run measures shown on /trackers/. Slugs are Our World in Data grapher names.
+# better: down | up  (which direction counts as progress)
+# Slugs are unverified until the first refresh runs: `python -m gnn trackers` prints OK/FAIL.
+trackers:
+  - id: child-mortality
+    title: "Children dying before their fifth birthday"
+    topic: "Health"
+    owid_slug: child-mortality
+    entity: World
+    unit: "%"
+    better: down
+    start_year: 1960
+  - id: extreme-poverty
+    title: "Share of people in extreme poverty"
+    topic: "Prosperity"
+    owid_slug: share-of-population-in-extreme-poverty
+    entity: World
+    unit: "%"
+    better: down
+    start_year: 1990
+  - id: electricity-access
+    title: "Share of people with electricity"
+    topic: "Energy"
+    owid_slug: share-of-the-population-with-access-to-electricity
+    entity: World
+    unit: "%"
+    better: up
+    start_year: 1998
+  - id: renewables-share
+    title: "Electricity from renewables"
+    topic: "Climate"
+    owid_slug: share-electricity-renewables
+    entity: World
+    unit: "%"
+    better: up
+    start_year: 2000
+  - id: solar-price
+    title: "Price of solar panels (US$ per watt)"
+    topic: "Climate"
+    owid_slug: solar-pv-prices
+    entity: World
+    unit: "$/W"
+    better: down
+    start_year: 1990
+  - id: life-expectancy
+    title: "Life expectancy at birth (years)"
+    topic: "Health"
+    owid_slug: life-expectancy
+    entity: World
+    unit: ""
+    better: up
+    start_year: 1950
+  - id: ireland-renewables
+    title: "Ireland: electricity from renewables"
+    topic: "Ireland"
+    owid_slug: share-electricity-renewables
+    entity: Ireland
+    unit: "%"
+    better: up
+    start_year: 2000
