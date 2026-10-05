@@ -9,6 +9,7 @@ permissions:
   contents: read
 jobs:
   render:
+    if: ${{ vars.PIPELINE_ENABLED == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
